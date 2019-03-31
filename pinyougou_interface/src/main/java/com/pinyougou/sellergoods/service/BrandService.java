@@ -22,4 +22,6 @@ public interface BrandService {
     void delete(long[] ids);
 
     List<Map> selectOptionList();
+
+    void updateStatus(long[] ids, String status);
 }
