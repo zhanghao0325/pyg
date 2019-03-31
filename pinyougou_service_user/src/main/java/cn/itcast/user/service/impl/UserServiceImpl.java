@@ -2,9 +2,13 @@ package cn.itcast.user.service.impl;
 
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.user.User;
+import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.pinyougou.sellergoods.service.UserService;
 
+import entity.PageResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,6 +20,7 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,5 +60,35 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("验证码不正确");
         }
 
+    }
+
+    @Override
+    public List<User>findAll() {
+
+      return  userDao.selectByExample(null);
+
+    }
+
+    @Override
+    public PageResult search(Integer page, Integer rows, User user) {
+        PageHelper.startPage(page,rows);
+        UserQuery userQuery = new UserQuery();
+        UserQuery.Criteria criteria = userQuery.createCriteria();
+        if (null!=user){
+            if (null!=user.getUsername()&& !"".equals(user.getUsername().trim())){
+                criteria.andNameLike("%"+user.getUsername()+"%");
+            }
+
+        }
+         if (null!=user){
+             if (null!=user.getPhone() && !"".equals(user.getPhone().trim())){
+                 criteria.andPhoneLike("%"+user.getPhone()+"%");
+             }
+         }
+
+        Page<User> users = (Page<User>) userDao.selectByExample(userQuery);
+        PageResult pageResult = new PageResult(users.getTotal(), users.getResult());
+
+        return  pageResult;
     }
 }
