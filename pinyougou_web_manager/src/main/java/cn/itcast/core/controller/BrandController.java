@@ -39,7 +39,7 @@ public class BrandController {
     public Result save(@RequestBody Brand brand) {
         try {
             brandService.save(brand);
-            return new Result(true, "success");
+            return new Result(true, "保存成功");
         } catch (Exception e) {
             return new Result(false, "保存失败");
 
@@ -81,7 +81,22 @@ public class BrandController {
     //查询所有品牌
     @RequestMapping("selectOptionList")
     public List<Map> selectOptionList() {
+
         return brandService.selectOptionList();
+    }
+
+    //修改审核状态
+    @RequestMapping("updateStatus")
+    public  Result  updateStatus(long[] ids,String status){
+
+        try {
+            brandService.updateStatus(ids,status);
+            return new Result(true,"审核通过");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"驳回");
+        }
+
     }
 
 }

@@ -114,6 +114,7 @@ public class BrandQuery {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
@@ -313,6 +314,11 @@ public class BrandQuery {
             addCriterion("first_char not between", value1, value2, "firstChar");
             return (Criteria) this;
         }
+
+        public Criteria andBrand_StatusEqualTo(Long value) {
+            addCriterion("brand_status =", value, "brand_status");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
@@ -407,4 +413,5 @@ public class BrandQuery {
             this(condition, value, secondValue, null);
         }
     }
+
 }
