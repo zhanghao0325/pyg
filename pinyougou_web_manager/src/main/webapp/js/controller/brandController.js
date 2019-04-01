@@ -70,14 +70,29 @@ app.controller("brandController",function($scope,$controller,brandService){
 	}
 	
 	// $scope.searchEntity={};
+    // 显示状态
+    $scope.status = ["未审核","审核通过","审核未通过"];
 	
 	// 假设定义一个查询的实体：searchEntity
 	$scope.search = function(page,rows){
+		alert(11)
 		// 向后台发送请求获取数据:
 		brandService.search(page,rows,$scope.searchEntity).success(function(response){
 			$scope.paginationConf.totalItems = response.total;
 			$scope.list = response.rows;
 		});
 	}
+    // 审核的方法:
+    $scope.updateStatus = function(status){
+        brandService.updateStatus($scope.selectIds,status).success(function(response){
+            if(response.flag){
+                $scope.reloadList();//刷新列表
+                $scope.selectIds = [];
+            }else{
+                alert(response.message);
+            }
+        });
+    }
+
 	
 });

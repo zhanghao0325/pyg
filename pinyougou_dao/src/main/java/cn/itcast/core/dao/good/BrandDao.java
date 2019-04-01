@@ -32,4 +32,9 @@ public interface BrandDao {
 
 
     List<Map> selectAll();
+
+
+    List<Brand> select();
+
+    void updateStatus(Brand brand);
 }
