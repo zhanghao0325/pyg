@@ -60,7 +60,13 @@
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                商品名称：<input type="text" ng-model="searchEntity.title">
+                商品标题名称：<input type="text" ng-model="searchEntity.title">
+                商品审核状态：<select ng-model="searchEntity.status">
+                <option value="">全部</option>
+                <option value="0">未审核</option>
+                <option value="1">审核通过</option>
+                <option value="2">审核未通过</option>
+            </select>
                 <button class="btn btn-default" ng-click="reloadList()" type="button">查询</button>
             </div>
         </div>

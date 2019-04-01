@@ -22,8 +22,39 @@ public class SeckillServiceImpl implements SeckillService {
         if (null!=seckillGoods.getTitle()&&!"".equals(seckillGoods.getTitle())){
             seckillGoodsQuery.createCriteria().andTitleLike("%"+seckillGoods.getTitle()+"%");
         }
+        if (null != seckillGoods.getStatus() && !"".equals(seckillGoods.getStatus())){
+            seckillGoodsQuery.createCriteria().andStatusEqualTo(seckillGoods.getStatus());
+        }
         Page page1= (Page) seckillGoodsDao.selectByExample(seckillGoodsQuery);
 
         return new PageResult(page1.getTotal(),page1.getResult());
+    }
+    /*
+    * 审核
+    * */
+    @Override
+    public void updateStatus(long[] ids, String status) {
+
+        SeckillGoods seckillGoods = new SeckillGoods();
+
+        seckillGoods.setStatus(status);
+
+        for (long id : ids) {
+
+            seckillGoods.setId(id);
+
+            seckillGoodsDao.updateByPrimaryKeySelective(seckillGoods);
+        }
+    }
+    /*
+    * 删除
+    * */
+    @Override
+    public void delete(long[] ids) {
+
+        for (long id : ids) {
+
+            seckillGoodsDao.deleteByPrimaryKey(id);
+        }
     }
 }

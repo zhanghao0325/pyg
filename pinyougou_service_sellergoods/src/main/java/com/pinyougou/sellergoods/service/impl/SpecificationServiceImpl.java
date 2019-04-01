@@ -29,12 +29,20 @@ public class SpecificationServiceImpl implements SpecificationService {
     private SpecificationOptionDao specificationOptionDao;
 
     @Override
-    public PageResult search(Integer page, Integer rows, SearchEntity searchEntity) {
-//        System.out.println(searchEntity);
+    public PageResult search(Integer page, Integer rows, Specification specification) {
+
         PageHelper.startPage(page, rows);
         SpecificationQuery specificationQuery = new SpecificationQuery();
-        if (null != searchEntity && !"".equals(searchEntity.getName().trim())) {
-            specificationQuery.createCriteria().andSpecNameLike("%" + searchEntity.getName() + "%");
+        if (null != specification.getSpecName() && !"".equals(specification.getSpecName().trim())) {
+            specificationQuery.createCriteria().andSpecNameLike("%" + specification.getSpecName() + "%");
+        }
+
+        /*
+        * 搜所审核状态
+        * */
+       if (null != specification.getSpecification_status() && !"".equals(specification.getSpecification_status())){
+            specificationQuery.createCriteria().andSpecification_statusEqualTo(Long.valueOf(specification.getSpecification_status()));
+
         }
         Page<Specification> page1 = (Page<Specification>) specificationDao.selectByExample(specificationQuery);
         PageResult pageResult = new PageResult(page1.getTotal(), page1.getResult());
@@ -44,10 +52,11 @@ public class SpecificationServiceImpl implements SpecificationService {
 
     @Override
     public void add(SpecificationVo specificationVo) {
+        specificationVo.getSpecification().setSpecification_status("0");
         specificationDao.insertSelective(specificationVo.getSpecification());
         for (SpecificationOption specificationOption : specificationVo.getSpecificationOptionList()) {
             specificationOption.setSpecId(specificationVo.getSpecification().getId());
-            System.out.println(specificationVo.getSpecification().getId());
+            //System.out.println(specificationVo.getSpecification().getId());
             specificationOptionDao.insertSelective(specificationOption);
 
         }
@@ -96,6 +105,25 @@ public class SpecificationServiceImpl implements SpecificationService {
     @Override
     public List<Map> selectOptionList() {
         return specificationDao.selectAll();
+    }
+
+    /*
+    *
+    *规格状态审核
+    * */
+    @Override
+    public void updateStatus(long[] ids, String status) {
+
+        Specification specification = new Specification();
+
+        specification.setSpecification_status(status);
+
+        for (long id : ids) {
+            specification.setId(id);
+
+            specificationDao.updateByPrimaryKeySelective(specification);
+
+        }
     }
 
 
