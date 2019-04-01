@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("all")
 @RestController
 @RequestMapping("typeTemplate")
 public class TypeTemplateController {
@@ -59,6 +60,24 @@ public class TypeTemplateController {
     }
     @RequestMapping("findTemplateList")
     public List<Map> findTemplateList(){
-       return typeTemplateService.findTemplateList();
+
+        return typeTemplateService.findTemplateList();
+    }
+
+    /*
+    * 模板 审核
+    *
+    * */
+    @RequestMapping("updateStatus")
+    public Result updateStatus(long[] ids,String status){
+
+        try {
+            typeTemplateService.updateStatus(ids,status);
+            return new Result(true,"审核通过");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"驳回");
+        }
+
     }
 }

@@ -15,7 +15,7 @@ public class OrderController {
     private OrderService orderService;
     @RequestMapping("search")
     public PageResult search(Integer page, Integer rows , @RequestBody Order order){
-        return orderService.search(page,rows ,order);
+        return orderService.search(page,rows,order);
     }
 
 }

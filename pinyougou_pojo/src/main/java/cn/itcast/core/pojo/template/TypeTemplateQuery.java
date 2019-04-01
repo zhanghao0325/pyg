@@ -453,6 +453,13 @@ public class TypeTemplateQuery {
             addCriterion("custom_attribute_items not between", value1, value2, "customAttributeItems");
             return (Criteria) this;
         }
+        /*
+        * 模板审核
+        * */
+        public Criteria andStatusEqualTo(Long value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

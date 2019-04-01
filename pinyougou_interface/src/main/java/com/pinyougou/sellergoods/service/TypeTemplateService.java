@@ -25,4 +25,6 @@ public interface TypeTemplateService {
 
 
     List<Map> findBySpecList(long id);
+
+    void updateStatus(long[] ids, String status);
 }
