@@ -77,7 +77,7 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
         );
     }
 
-    // 显示状态
+    // 显示状态1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
     $scope.status = ["未审核","审核通过","审核未通过","关闭"];
 
     $scope.itemCatList = [];
