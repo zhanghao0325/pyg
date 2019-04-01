@@ -21,13 +21,27 @@ public class ItemCatServiceImpl implements ItemCatService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+
+    @Override
+    public List<ItemCat> findAll() {
+        return itemCatDao.selectByExample(null);
+
+    }
+
     @Override
     public PageResult search(Integer page, Integer rows, ItemCat itemCat) {
 
         PageHelper.startPage(page, rows);
+        ItemCatQuery itemCatQuery = new ItemCatQuery();
+
+        ItemCatQuery.Criteria criteria = itemCatQuery.createCriteria();
+
+        if (null != itemCat.getStatus() && !"".equals(itemCat.getStatus())){
+
+            criteria.andStatusEqualTo(Long.valueOf(itemCat.getStatus()));
+        }
+
         Page<ItemCat> itemCats = (Page<ItemCat>) itemCatDao.selectByExample(null);
-
-
 
         return new PageResult(itemCats.getTotal(), itemCats.getResult());
     }
@@ -47,11 +61,18 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Override
     public void save(ItemCat itemCat) {
+        Long parentId = itemCat.getParentId();
+
+        if (parentId == 0){
+            itemCat.setStatus("0");
+        }
+
         itemCatDao.insertSelective(itemCat);
     }
 
     @Override
     public ItemCat findOne(long id) {
+
         return itemCatDao.selectByPrimaryKey(id);
     }
 
@@ -86,9 +107,5 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     }
 
-    @Override
-    public List<ItemCat> findAll() {
-        return itemCatDao.selectByExample(null);
 
-    }
 }

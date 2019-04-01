@@ -5,6 +5,7 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
 
     //读取列表数据绑定到表单中
     $scope.findAll=function(){
+
         seckillService.findAll().success(
             function(response){
                 $scope.list=response;
@@ -55,7 +56,7 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
     //批量删除
     $scope.dele=function(){
         //获取选中的复选框
-        seckillService.dele( $scope.selectIds ).success(
+        goodsService.dele( $scope.selectIds ).success(
             function(response){
                 if(response.flag){
                     $scope.reloadList();//刷新列表
@@ -64,14 +65,12 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
             }
         );
     }
-    // 显示状态
-    $scope.status = ["未审核","审核通过","审核未通过"];
-
 
     $scope.searchEntity={};//定义搜索对象
 
     //搜索
     $scope.search=function(page,rows){
+
         seckillService.search(page,rows,$scope.searchEntity).success(
             function(response){
                 $scope.list=response.rows;
@@ -80,7 +79,8 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
         );
     }
 
-
+    // 显示状态
+    $scope.status = ["未支付","已支付"];
 
     $scope.itemCatList = [];
     // 显示分类:

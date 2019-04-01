@@ -45,7 +45,10 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			}		
 		);				
 	}
-	
+    // 显示状态
+    $scope.status = ["未审核","审核通过","审核未通过"];
+
+
 	$scope.searchEntity={};//定义搜索对象 
 	
 	//搜索
@@ -110,5 +113,18 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
         );
     }
 
-    
+    // 审核的方法:
+    $scope.updateStatus = function(status){
+        itemCatService.updateStatus($scope.selectIds,status).success(function(response){
+            if(response.flag){
+                $scope.reloadList();//刷新列表
+                $scope.selectIds = [];
+            }else{
+                alert(response.message);
+            }
+        });
+    }
+
+
+
 });	

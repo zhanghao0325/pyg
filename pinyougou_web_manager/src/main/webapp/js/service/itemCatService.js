@@ -36,4 +36,8 @@ app.service('itemCatService',function($http){
 	this.selectTemplateList = function(){
 		return $http.get("../typeTemplate/findTemplateList.do");
 	}
+    //审核
+    this.updateStatus = function(ids,status){
+        return $http.get('../itemCat/updateStatus.do?ids='+ids+"&status="+status);
+    }
 });

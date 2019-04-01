@@ -363,6 +363,13 @@ public class ItemCatQuery {
             addCriterion("type_id not between", value1, value2, "typeId");
             return (Criteria) this;
         }
+        /*
+        * 审核状态
+        * */
+        public Criteria andStatusEqualTo(Long value) {
+            addCriterion("Status =", value, "Status");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
