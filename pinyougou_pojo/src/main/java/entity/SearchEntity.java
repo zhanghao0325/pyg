@@ -4,13 +4,25 @@ import java.io.Serializable;
 
 public class SearchEntity implements Serializable {
     String name;
+
     String firstChar;
+
+    String specification_status;
+
+    public String getSpecification_status() {
+        return specification_status;
+    }
+
+    public void setSpecification_status(String specification_status) {
+        this.specification_status = specification_status;
+    }
 
     @Override
     public String toString() {
         return "SearchEntity{" +
                 "name='" + name + '\'' +
                 ", firstChar='" + firstChar + '\'' +
+                ", specification_status='" + specification_status + '\'' +
                 '}';
     }
 

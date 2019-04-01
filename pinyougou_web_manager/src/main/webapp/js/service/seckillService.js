@@ -29,7 +29,9 @@ app.service('seckillService',function($http){
     this.search=function(page,rows,searchEntity){
         return $http.post('../seckill/search.do?page='+page+"&rows="+rows, searchEntity);
     }
-
+     /*
+     * 审核
+     * */
     this.updateStatus = function(ids,status){
         return $http.get('../seckill/updateStatus.do?ids='+ids+"&status="+status);
     }
