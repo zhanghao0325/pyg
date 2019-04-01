@@ -17,6 +17,13 @@ public class ItemCatController {
     @Reference
     ItemCatService itemCatService;
 
+    @RequestMapping("findAll")
+    public List<ItemCat> findAll(){
+        return itemCatService.findAll();
+    }
+
+
+
     @RequestMapping("search")
     public PageResult search(Integer page, Integer rows, @RequestBody ItemCat itemCat) {
         return itemCatService.search(page, rows, itemCat);
@@ -25,6 +32,7 @@ public class ItemCatController {
 
     @RequestMapping("findByParentId")
     public List<ItemCat> findByParentId(long parentId) {
+
         return itemCatService.findByParentId(parentId);
     }
 
@@ -65,10 +73,6 @@ public class ItemCatController {
             e.printStackTrace();
             return new Result(false,"false");
         }
-    }
-    @RequestMapping("findAll")
-    public List<ItemCat> findAll(){
-        return itemCatService.findAll();
     }
 
 }
