@@ -28,7 +28,7 @@ public class BrandController {
 
     @RequestMapping("search")
     public PageResult findPage(Integer page, Integer rows, @RequestBody(required = false) Brand brand) {
-
+        System.out.println("1");
 
         return brandService.findPage(page, rows, brand);
 
@@ -83,7 +83,7 @@ public class BrandController {
     public List<Map> selectOptionList() {
 
         return brandService.selectOptionList();
-    }
+}
 
     //修改审核状态
     @RequestMapping("updateStatus")

@@ -52,6 +52,14 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         if (null != typeTemplate.getName() && !"".equals(typeTemplate.getName().trim())) {
             criteria.andNameLike("%" + typeTemplate.getName() + "%");
         }
+
+        /*
+        * 模板审核
+        * */
+        if (null != typeTemplate.getStatus() && !"".equals(typeTemplate.getStatus())){
+
+            criteria.andStatusEqualTo(Long.valueOf(typeTemplate.getStatus()));
+        }
         Page<TypeTemplate> pages = (Page<TypeTemplate>) typeTemplateDao.selectByExample(typeTemplateQuery);
         redisTemplate.boundHashOps("template").put("","");
         return new PageResult(pages.getTotal(), pages.getResult());
@@ -60,7 +68,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     @Override
     public void add( TypeTemplate typeTemplate) {
         if (null!=typeTemplate){
-
+            typeTemplate.setStatus("0");
             typeTemplateDao.insertSelective(typeTemplate);
         }
     }
@@ -106,6 +114,23 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         }
         //返回存有map集合的list集合
         return list;
+    }
+    /*
+    * 模板 审核
+    * */
+    @Override
+    public void updateStatus(long[] ids, String status) {
+
+        TypeTemplate typeTemplate = new TypeTemplate();
+
+        typeTemplate.setStatus(status);
+
+        for (long id : ids) {
+
+            typeTemplate.setId(id);
+
+            typeTemplateDao.updateByPrimaryKeySelective(typeTemplate);
+        }
     }
 
 

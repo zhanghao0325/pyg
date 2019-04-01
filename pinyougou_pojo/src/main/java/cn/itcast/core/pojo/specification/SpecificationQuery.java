@@ -243,6 +243,13 @@ public class SpecificationQuery {
             addCriterion("spec_name not between", value1, value2, "specName");
             return (Criteria) this;
         }
+         /*
+         * 搜索审核状态
+         * */
+        public Criteria andSpecification_statusEqualTo(Long value) {
+            addCriterion("Specification_status =", value, "Specification_status");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

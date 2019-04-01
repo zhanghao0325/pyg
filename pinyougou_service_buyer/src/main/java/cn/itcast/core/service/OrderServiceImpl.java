@@ -9,9 +9,13 @@ import cn.itcast.core.pojo.item.Item;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
+import cn.itcast.core.pojo.order.OrderQuery;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.pinyougou.sellergoods.service.OrderService;
 import entity.Cart;
+import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -104,5 +108,17 @@ public class OrderServiceImpl implements OrderService {
             redisTemplate.boundHashOps("cart").delete(name);
 
         }
+    }
+
+    @Override
+    public PageResult search(Integer page, Integer rows, Order order) {
+        PageHelper.startPage(page,rows);
+        OrderQuery orderQuery = new OrderQuery();
+        if (null!=order.getStatus()&&!"".equals(order.getStatus())){
+            orderQuery.createCriteria().andStatusEqualTo(order.getStatus());
+        }
+        Page<Order> page1= (Page<Order>) orderDao.selectByExample(orderQuery);
+
+        return new PageResult(page1.getTotal(),page1.getResult());
     }
 }

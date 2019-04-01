@@ -70,7 +70,7 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 			}		
 		);				
 	}
-	
+    $scope.status = ["未审核","审核通过","审核未通过"];
 	$scope.searchEntity={};
 	
 	//搜索
@@ -99,6 +99,19 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 			$scope.specList = {data:response};
 		});
 	}
+
+    // 审核的方法:
+    $scope.updateStatus = function(status){
+        typeTemplateService.updateStatus($scope.selectIds,status).success(function(response){
+            if(response.flag){
+            	alert(response.message)
+                $scope.reloadList();//刷新列表
+                $scope.selectIds = [];
+            }else{
+                alert(response.message);
+            }
+        });
+    }
 	
 	//给扩展属性添加行
 	$scope.entity={customAttributeItems:[]};
