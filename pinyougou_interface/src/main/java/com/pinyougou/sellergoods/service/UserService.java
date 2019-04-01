@@ -15,4 +15,6 @@ public interface UserService  {
     List<User> findAll();
 
     PageResult search(Integer page, Integer rows, User user);
+
+    PageResult find(Integer page, Integer rows, User user);
 }

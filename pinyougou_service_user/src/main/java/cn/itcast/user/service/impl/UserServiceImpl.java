@@ -74,21 +74,33 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(page,rows);
         UserQuery userQuery = new UserQuery();
         UserQuery.Criteria criteria = userQuery.createCriteria();
-        if (null!=user){
+        if (null!=user&&!"".equals(user.getUsername())){
             if (null!=user.getUsername()&& !"".equals(user.getUsername().trim())){
                 criteria.andNameLike("%"+user.getUsername()+"%");
             }
 
         }
-         if (null!=user){
+         if (null!=user&&!"".equals(user.getPhone())){
              if (null!=user.getPhone() && !"".equals(user.getPhone().trim())){
                  criteria.andPhoneLike("%"+user.getPhone()+"%");
              }
          }
+//        User user1 = userDao.selectByPrimaryKey((long) 10);
 
         Page<User> users = (Page<User>) userDao.selectByExample(userQuery);
         PageResult pageResult = new PageResult(users.getTotal(), users.getResult());
 
         return  pageResult;
+    }
+
+    @Override
+    public PageResult find(Integer page, Integer rows, User user) {
+        PageHelper.startPage(page,rows);
+        System.out.println("page:"+page+"rows:"+rows);
+        Page<User> users= (Page<User>) userDao.selectByExample(null);
+        System.out.println(users.getTotal());
+        System.out.println(users.getResult());
+        return new PageResult(users.getTotal(),users.getResult());
+
     }
 }
