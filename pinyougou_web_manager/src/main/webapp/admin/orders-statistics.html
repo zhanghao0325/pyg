@@ -23,16 +23,16 @@
 
     <script type="text/javascript" src="../js/base_pagination.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
-    <script type="text/javascript" src="../js/controller/orderController.js"></script>
-    <script type="text/javascript" src="../js/service/orderService.js"></script>
+    <script type="text/javascript" src="../js/controller/orders-statisticsController.js"></script>
+    <script type="text/javascript" src="../js/service/orders_statisticsService.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="orderController" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="orders-statisticsController" >
 
 <!-- .box-body -->
 
 <div class="box-header with-border">
-    <h3 class="box-title">秒杀商品审核</h3>
+    <h3 class="box-title">订单统计</h3>
 </div>
 
 <div class="box-body">
@@ -53,15 +53,15 @@
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                <!--商品名称：<input type="text" ng-model="searchEntity.title">-->
-                <!--<button class="btn btn-default" ng-click="reloadList()" type="button">查询</button>-->
-                品牌审核状态：<select ng-model="searchEntity.status">
-                <option value="">全部</option>
-                <option value="1">未付款</option>
-                <option value="2">已付款</option>
-                <option value="3">未发货</option>
-            </select>
-                <input class="btn btn-default" ng-click="reloadList()" type="button" value="查询">
+                订单名称：<input type="text" ng-model="searchEntity.username">
+                <button class="btn btn-default" ng-click="reloadList()" type="button">查询</button>
+                <!--品牌审核状态：<select ng-model="searchEntity.status">-->
+                <!--<option value="">全部</option>-->
+                <!--<option value="1">未付款</option>-->
+                <!--<option value="2">已付款</option>-->
+                <!--<option value="3">未发货</option>-->
+            <!--</select>-->
+                <!--<input class="btn btn-default" ng-click="reloadList()" type="button" value="查询">-->
             </div>
         </div>
         <!--工具栏/-->
@@ -74,32 +74,19 @@
                     <input id="selall" type="checkbox" class="icheckbox_square-blue">
                 </th>
                 <th class="sorting_asc">订单ID</th>
-                <th class="sorting">实付金额</th>
-                <th class="sorting">支付类型</th>
-                <th class="sorting">收货人地址</th>
-                <th class="sorting">手机</th>
-                <th class="sorting">收货人</th>
-                <th class="sorting">订单来源</th>
-                <th class="sorting">状态</th>
+                <th class="sorting">用户</th>
+                <th class="sorting">订单总计</th>
+                <th class="sorting">订单总金额</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="entity in list">
-                <td><input ng-click="updateSelection($event,entity.orderId)" type="checkbox"></td>
-                <td>{{entity.orderId}}</td>
+                <td><input ng-click="updateSelection($event,entity.id)" type="checkbox"></td>
+                <td>{{entity.id}}</td>
+                <td>{{entity.username}}</td>
+                <td>{{entity.orderTotal}}</td>
                 <td>{{entity.payment}}</td>
-                <span>{{paystatus[entity.paymentType]}}</span>
-                <td>{{entity.receiverAreaName}}</td>
-                <td>{{entity.receiverMobile}}</td>
-                <td>{{entity.receiver}}</td>
-                <td>{{orginstatus[entity.sourceType]}}</td>
-                <td>
-                    <span>
-		                {{status[entity.status]}}
-                    </span>
-
-                </td>
                 <td class="text-center">
                     <button type="button" class="btn bg-olive btn-xs">详情</button>
                 </td>
