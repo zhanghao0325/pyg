@@ -28,7 +28,7 @@ public class PayController {
             while (true) {
                 Map<String, String> map = payService.queryPayStatus(out_trade_no);
                 if ("NOTPAY".equals(map.get("trade_state"))) {
-                    Thread.sleep(5000);
+                    Thread.sleep(4000);
                     i++;
                     if (i>=60){
                         return new Result(false,"支付超时");
