@@ -21,4 +21,6 @@ public interface ItemCatService {
     void delete(long[] ids);
 
     List<ItemCat> findAll();
+
+    void updateStatus(long[] ids, String status);
 }
