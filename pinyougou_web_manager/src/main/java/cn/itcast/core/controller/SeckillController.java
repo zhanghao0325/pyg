@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("seckill")
 public class SeckillController {
+
     @Reference
     private SeckillService seckillService;
     @RequestMapping("search")

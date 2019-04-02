@@ -93,7 +93,7 @@ app.controller('seckillController' ,function($scope,$controller,seckillService){
 
     // 审核的方法:
     $scope.updateStatus = function(status){
-        goodsService.updateStatus($scope.selectIds,status).success(function(response){
+        seckillService.updateStatus($scope.selectIds,status).success(function(response){
             if(response.flag){
                 $scope.reloadList();//刷新列表
                 $scope.selectIds = [];

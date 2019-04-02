@@ -8,7 +8,12 @@ public interface SeckillService {
     PageResult search(Integer page, Integer rows, SeckillOrder seckillOrder);
 
 
+    PageResult search(Integer page, Integer rows, SeckillGoods seckillGoods);
+
+
+
     void delete(long[] ids);
 
 
+    void updateStatus(long[] ids, String status);
 }
