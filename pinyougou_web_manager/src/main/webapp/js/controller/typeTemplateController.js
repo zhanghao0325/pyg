@@ -122,4 +122,20 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 	$scope.deleteTableRow = function(index){
 		$scope.entity.customAttributeItems.splice(index,1);
 	}
+    $scope.derive = function(){
+
+        // 向后台发送请求:
+        typeTemplateService.derive().success(function(response){
+            // 判断是否成功:
+            if(response.flag){
+                // 成功
+                alert(response.message);
+
+            }else{
+                // 失败
+                alert(response.message);
+            }
+        });
+    }
+
 });	

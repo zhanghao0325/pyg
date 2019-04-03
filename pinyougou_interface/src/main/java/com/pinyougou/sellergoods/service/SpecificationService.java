@@ -24,4 +24,8 @@ public interface SpecificationService {
     List<Map> selectOptionList();
 
     void updateStatus(long[] ids, String status);
+
+    String ajaxUploadExcel(byte[] bytes);
+
+    List<Specification> seleExecle();
 }

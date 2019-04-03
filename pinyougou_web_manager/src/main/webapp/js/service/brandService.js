@@ -35,4 +35,11 @@ app.service("brandService",function($http){
     this.updateStatus = function(ids,status){
         return $http.get('../brand/updateStatus.do?ids='+ids+"&status="+status);
     }
+    this.AddExcel = function(){
+        return $http.get('../brand/AddExcel.do');
+    }
+    this.derive = function(){
+
+        return $http.post("../brand/derive.do");
+    }
 });

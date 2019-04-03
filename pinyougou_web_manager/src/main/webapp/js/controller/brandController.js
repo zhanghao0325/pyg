@@ -2,6 +2,21 @@
 app.controller("brandController",function($scope,$controller,brandService){
 	// AngularJS中的继承:伪继承
 	$controller('baseController',{$scope:$scope});
+    // 查询所有的品牌列表的方法:
+    $scope.AddExcel = function(){
+        // 向后台发送请求:
+        brandService.AddExcel().success(function(response){
+            // 判断是否成功:
+            if(response.flag){
+                // 成功
+                alert(response.message);
+
+            }else{
+                // 失败
+                alert(response.message);
+            }
+        });
+    }
 	
 	// 查询所有的品牌列表的方法:
 	$scope.findAll = function(){
@@ -88,6 +103,22 @@ app.controller("brandController",function($scope,$controller,brandService){
                 $scope.reloadList();//刷新列表
                 $scope.selectIds = [];
             }else{
+                alert(response.message);
+            }
+        });
+    }
+
+    $scope.derive = function(){
+
+        // 向后台发送请求:
+        brandService.derive().success(function(response){
+            // 判断是否成功:
+            if(response.flag){
+                // 成功
+                alert(response.message);
+
+            }else{
+                // 失败
                 alert(response.message);
             }
         });

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ItemCatDao {
+     List<ItemCat> seleByStatus();
     int countByExample(ItemCatQuery example);
 
     int deleteByExample(ItemCatQuery example);

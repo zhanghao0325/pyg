@@ -31,4 +31,8 @@ app.service("userService",function($http){
     this.selectOptionList = function(){
         return $http.get("../user/selectOptionList.do");
     }
+    this.derive = function(ids){
+        console.log(ids)
+        return $http.post("../user/derive.do?ids="+ids);
+    }
 });

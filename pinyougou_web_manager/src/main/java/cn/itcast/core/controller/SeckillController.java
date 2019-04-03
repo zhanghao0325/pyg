@@ -16,7 +16,8 @@ public class SeckillController {
     private SeckillService seckillService;
     @RequestMapping("search")
     public PageResult search(Integer page , Integer rows, @RequestBody SeckillGoods seckillGoods){
-        return seckillService.search(page,rows,seckillGoods);
+        //return seckillService.search(page,rows,seckillGoods);
+        return null;
     }
 
 
@@ -29,7 +30,7 @@ public class SeckillController {
     public Result updateStatus(long[] ids,String status){
 
         try {
-            seckillService.updateStatus(ids,status);
+            //seckillService.updateStatus(ids,status);
             return new Result(true,"审核通过");
 
         } catch (Exception e) {

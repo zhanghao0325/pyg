@@ -21,4 +21,9 @@ public interface ItemCatService {
     void delete(long[] ids);
 
     List<ItemCat> findAll();
+
+    List<ItemCat> seleExecle();
+
+    String ajaxUploadExcel(byte[] bytes);
+
 }

@@ -1,6 +1,15 @@
 package cn.itcast.user.service.impl;
 
+import cn.itcast.core.dao.good.GoodsDao;
+import cn.itcast.core.dao.order.OrderDao;
+import cn.itcast.core.dao.order.OrderItemDao;
 import cn.itcast.core.dao.user.UserDao;
+import cn.itcast.core.pojo.good.Goods;
+import cn.itcast.core.pojo.good.GoodsQuery;
+import cn.itcast.core.pojo.order.Order;
+import cn.itcast.core.pojo.order.OrderItem;
+import cn.itcast.core.pojo.order.OrderItemQuery;
+import cn.itcast.core.pojo.order.OrderQuery;
 import cn.itcast.core.pojo.user.User;
 import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -19,6 +28,7 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -102,5 +112,40 @@ public class UserServiceImpl implements UserService {
         System.out.println(users.getResult());
         return new PageResult(users.getTotal(),users.getResult());
 
+    }
+    @Autowired
+    private OrderDao orderDao;
+    @Autowired
+    private OrderItemDao orderItemDao;
+    @Autowired
+    private GoodsDao goodsDao;
+
+    @Override
+    public List<Goods> seleExecle(Long id) {
+        OrderQuery query=new OrderQuery();
+        OrderQuery.Criteria criteria = query.createCriteria();
+        criteria.andUserIdEqualTo(String.valueOf(id));
+        ArrayList<Goods> list = new ArrayList<>();
+        List<Order> order1 = (List<Order>) orderDao.selectByExample(query);
+        for (Order order2 : order1) {
+            Long orderId = order2.getOrderId();
+            OrderItemQuery orderItemQuery = new OrderItemQuery();
+            OrderItemQuery.Criteria criteria1 = orderItemQuery.createCriteria();
+            criteria1.andOrderIdEqualTo(orderId);
+            List<OrderItem> orderItem = (List<OrderItem>) orderItemDao.selectByExample(orderItemQuery);
+            for (OrderItem item : orderItem) {
+                Long goodsId = item.getGoodsId();
+                GoodsQuery goodsQuery = new GoodsQuery();
+                GoodsQuery.Criteria criteria2 = goodsQuery.createCriteria();
+                criteria2.andIdEqualTo(goodsId);
+                List<Goods> goods = (List<Goods>) goodsDao.selectByExample(goodsQuery);
+                for (Goods good : goods) {
+                    list.add(good);
+                }
+            }
+
+        }
+
+        return list;
     }
 }

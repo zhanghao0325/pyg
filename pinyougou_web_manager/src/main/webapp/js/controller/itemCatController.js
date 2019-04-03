@@ -10,7 +10,8 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 				$scope.list=response;
 			}			
 		);
-	}    
+	}
+
 	
 	//分页
 	$scope.findPage=function(page,rows){			
@@ -23,14 +24,15 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	}
 	
 	//查询实体 
-	$scope.findOne=function(id){				
-		itemCatService.findOne(id).success(
-			function(response){
-				$scope.entity= response;					
-			}
-		);				
-	}
-	
+	$scope.findOne=function(id){
+        itemCatService.findOne(id).success(
+            function(response){
+                $scope.entity= response;
+            }
+        );
+    }
+
+
 
 	 
 	//批量删除 
@@ -123,6 +125,21 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
                 alert(response.message);
             }
         });
+    }
+    $scope.Execle=function(){
+        itemCatService.Execle().success(
+            function(response){
+                // 判断是否成功:
+                if(response.flag){
+                    // 成功
+                    alert(response.message);
+
+                }else{
+                    // 失败
+                    alert(response.message);
+                }
+            }
+        );
     }
 
 

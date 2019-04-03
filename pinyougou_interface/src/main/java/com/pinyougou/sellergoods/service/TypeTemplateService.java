@@ -27,4 +27,8 @@ public interface TypeTemplateService {
     List<Map> findBySpecList(long id);
 
     void updateStatus(long[] ids, String status);
+
+    String ajaxUploadExcel(byte[] bytes);
+
+    List<TypeTemplate> seleExecle();
 }

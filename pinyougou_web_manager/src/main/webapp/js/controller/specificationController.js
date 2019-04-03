@@ -101,5 +101,22 @@ app.controller('specificationController' ,function($scope,$controller ,specifica
         });
     }
 
+    $scope.derive = function(){
+
+        // 向后台发送请求:
+        specificationService.derive().success(function(response){
+            // 判断是否成功:
+            if(response.flag){
+                // 成功
+                alert(response.message);
+
+            }else{
+                // 失败
+                alert(response.message);
+            }
+        });
+    }
+
+
 
 });	

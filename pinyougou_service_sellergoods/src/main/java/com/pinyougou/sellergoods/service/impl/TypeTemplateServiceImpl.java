@@ -1,19 +1,24 @@
 package com.pinyougou.sellergoods.service.impl;
 
+import cn.itcast.common.utils.ExcelUtil;
 import cn.itcast.core.dao.specification.SpecificationDao;
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.dao.template.TypeTemplateDao;
+import cn.itcast.core.pojo.specification.Specification;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
 import cn.itcast.core.pojo.template.TypeTemplateQuery;
 
 import com.alibaba.dubbo.config.annotation.Service;
+
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.pinyougou.sellergoods.service.SpecificationService;
+
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +26,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-
+@SuppressWarnings("all")
 @Service
 @Transactional
 public class TypeTemplateServiceImpl implements TypeTemplateService {
@@ -38,7 +45,9 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     public PageResult search(Integer page, Integer rows, TypeTemplate typeTemplate) {
         List<TypeTemplate> typeTemplates = typeTemplateDao.selectByExample(null);
         for (TypeTemplate template : typeTemplates) {
-            JSONArray brandlist = JSON.parseArray(template.getBrandIds());
+            // JSONArray brandlist = JSON.parseArray(template.getBrandIds());
+
+            List<Map> brandlist = JSON.parseArray(template.getBrandIds(), Map.class);
             redisTemplate.boundHashOps("brandList").put(template.getId(),brandlist);
             List<Map> specList = findBySpecList(template.getId());
 
@@ -131,6 +140,69 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
             typeTemplateDao.updateByPrimaryKeySelective(typeTemplate);
         }
+    }
+
+    @Override
+    public String ajaxUploadExcel(byte[] bytes) {
+        System.out.println("得到数据文件");
+        if (null == bytes) {
+            try {
+                throw new Exception("文件不存在！");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        InputStream in = null;
+        try {
+            in = new ByteArrayInputStream(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("加载流");
+        List<List<Object>> list = null;
+        try {
+            System.out.println("加载流");
+            list = new ExcelUtil().getBankListByExcel(in, "jjj");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //该处可调用service相应方法进行数据保存到数据库中，现只对数据输出
+        TypeTemplate vo = new TypeTemplate();
+        for (int i = 0; i < list.size(); i++) {
+            List<Object> lo = list.get(i);
+            System.out.println("遍历" + list.get(i));
+            TypeTemplate j = null;
+
+            try {
+                //j = studentmapper.selectByPrimaryKey(Long.valueOf());
+                j = typeTemplateDao.selectByPrimaryKey(Long.valueOf(String.valueOf(lo.get(0))));
+            } catch (NumberFormatException e) {
+                // TODO Auto-generated catch block
+                System.out.println("没有新增");
+            }
+            vo.setId(Long.valueOf(String.valueOf(lo.get(0))));
+            vo.setName(String.valueOf(lo.get(1)));
+            vo.setSpecIds(String.valueOf(lo.get(2)));
+            vo.setBrandIds(String.valueOf(lo.get(3)));
+            vo.setCustomAttributeItems(String.valueOf(lo.get(4)));
+            vo.setStatus(String.valueOf(lo.get(5)));
+
+
+
+            if (j == null) {
+                typeTemplateDao.insertSelective(vo);
+            } else {
+                typeTemplateDao.updateByPrimaryKey(vo);
+            }
+        }
+        return "very Good";
+    }
+
+    @Override
+    public List<TypeTemplate> seleExecle() {
+        return typeTemplateDao.selectByExample(null);
     }
 
 

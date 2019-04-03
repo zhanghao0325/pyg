@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 
+import cn.itcast.common.utils.ExcelUtil;
 import cn.itcast.core.dao.good.BrandDao;
 import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.good.BrandQuery;
@@ -10,6 +11,8 @@ import com.pinyougou.sellergoods.service.BrandService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -104,4 +107,65 @@ public class BrandServiceImpl implements BrandService {
         }
 
     }
+
+    @Override
+    public String ajaxUploadExcel(byte[] bytes) {
+
+        System.out.println("得到数据文件");
+        if (null == bytes) {
+            try {
+                throw new Exception("文件不存在！");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        InputStream in = null;
+        try {
+            in = new ByteArrayInputStream(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("加载流");
+        List<List<Object>> list = null;
+        try {
+            System.out.println("加载流");
+            list = new ExcelUtil().getBankListByExcel(in, "jjj");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //该处可调用service相应方法进行数据保存到数据库中，现只对数据输出
+        Brand vo = new Brand();
+        for (int i = 0; i < list.size(); i++) {
+            List<Object> lo = list.get(i);
+            System.out.println("遍历" + list.get(i));
+            Brand j = null;
+
+            try {
+                //j = studentmapper.selectByPrimaryKey(Long.valueOf());
+                j = brandDao.selectByPrimaryKey(Long.valueOf(String.valueOf(lo.get(0))));
+            } catch (NumberFormatException e) {
+                // TODO Auto-generated catch block
+                System.out.println("没有新增");
+            }
+            vo.setId(Long.valueOf(String.valueOf(lo.get(0))));
+            vo.setName(String.valueOf(lo.get(1)));
+            vo.setFirstChar(String.valueOf(lo.get(2)));
+            vo.setBrand_status(String.valueOf(lo.get(3)));
+
+            if (j == null) {
+                brandDao.insertSelective(vo);
+            } else {
+                brandDao.updateByPrimaryKey(vo);
+            }
+        }
+        return "very Good";
+    }
+
+    @Override
+    public List<Brand> seleExecle() {
+        return brandDao.selectByExample(null);
+    }
+
 }

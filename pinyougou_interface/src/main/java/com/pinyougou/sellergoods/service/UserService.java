@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service;
 
+import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.user.User;
 import entity.PageResult;
 
@@ -17,4 +18,6 @@ public interface UserService  {
     PageResult search(Integer page, Integer rows, User user);
 
     PageResult find(Integer page, Integer rows, User user);
+
+    List<Goods> seleExecle(Long id);
 }
