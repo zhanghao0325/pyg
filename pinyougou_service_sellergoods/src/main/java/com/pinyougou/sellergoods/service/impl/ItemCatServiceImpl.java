@@ -31,6 +31,56 @@ public class ItemCatServiceImpl implements ItemCatService {
         return itemCatDao.selectByExample(null);
 
     }
+    /*
+    * 分类 审核
+    * */
+    @Override
+    public void updateStatus(long[] ids, String status) {
+        //创建分类
+        ItemCat itemCat = new ItemCat();
+        //二级分类
+        ItemCatQuery itemCatQuery = new ItemCatQuery();
+        //三级分类
+        ItemCatQuery cat1Query = new ItemCatQuery();
+
+        //遍历参数   选项框数组
+        for (long id : ids) {
+            //设置id
+            itemCat.setId(id);
+            //设置状态
+            itemCat.setStatus(status);
+            //更改
+            itemCatDao.updateByPrimaryKeySelective(itemCat);
+            //二级分类 parentid 等于 一级分类id   作为查询条件
+            itemCatQuery.createCriteria().andParentIdEqualTo(id);
+            //查询第二级
+            List<ItemCat> itemCats1 = itemCatDao.selectByExample(itemCatQuery);
+            //遍历第二级
+            for (ItemCat cat1 : itemCats1) {
+
+
+                //System.out.println(cat1.getParentId()+cat1.getName());
+
+                cat1.setStatus(itemCat.getStatus());
+                cat1.setId(cat1.getId());
+                itemCatDao.updateByPrimaryKeySelective(cat1);
+
+                cat1Query.createCriteria().andParentIdEqualTo(cat1.getId());
+
+                List<ItemCat> itemCats = itemCatDao.selectByExample(cat1Query);
+
+                for (ItemCat cat2 : itemCats) {
+
+                    System.out.println(cat2.getParentId()+cat2.getName());
+
+                    cat2.setStatus(cat1.getStatus());
+                    cat2.setId(cat2.getId());
+                    itemCatDao.updateByPrimaryKeySelective(cat2);
+                }
+
+            }
+        }
+    }
 
     @Override
     public List<ItemCat> seleExecle() {
@@ -130,12 +180,6 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Override
     public void save(ItemCat itemCat) {
-        Long parentId = itemCat.getParentId();
-
-        if (parentId == 0){
-            itemCat.setStatus("0");
-        }
-
         itemCatDao.insertSelective(itemCat);
     }
 

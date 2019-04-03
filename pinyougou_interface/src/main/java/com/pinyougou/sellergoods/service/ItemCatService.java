@@ -22,6 +22,8 @@ public interface ItemCatService {
 
     List<ItemCat> findAll();
 
+    void updateStatus(long[] ids, String status);
+
     List<ItemCat> seleExecle();
 
     String ajaxUploadExcel(byte[] bytes);

@@ -23,8 +23,8 @@
 
     <script type="text/javascript" src="../js/base_pagination.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
-    <script type="text/javascript" src="../js/controller/seckillorderController.js"></script>
-    <script type="text/javascript" src="../js/service/seckillorderService.js"></script>
+    <script type="text/javascript" src="../js/controller/seckillController.js"></script>
+    <script type="text/javascript" src="../js/service/seckillService.js"></script>
     <script type="text/javascript" src="../js/service/itemCatService.js"></script>
 </head>
 
@@ -54,7 +54,7 @@
                     <button type="button" ng-click="updateStatus('2')" class="btn btn-default" title="驳回"><i
                             class="fa fa-ban"></i> 驳回
                     </button>
-                    <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-refresh"></i> 刷新</button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                 </div>
             </div>
         </div>
@@ -83,10 +83,11 @@
                 <th class="sorting">标题</th>
                 <th class="sorting">商品原价</th>
                 <th class="sorting">秒杀价格</th>
+                <th class="sorting">商家</th>
                 <th class="sorting">开始时间</th>
                 <th class="sorting">结束时间</th>
-                <th class="sorting">秒杀商品数</th>
                 <th class="sorting">剩余库存数</th>
+                <th class="sorting">秒杀商品数</th>
                 <th class="sorting">审核状态</th>
                 <th class="text-center">操作</th>
             </tr>

@@ -154,4 +154,19 @@ public class ItemCatController {
         return itemCatService.ajaxUploadExcel(bytes);
     }
 
+    /*
+    * 分类 审核
+    * */
+    @RequestMapping("updateStatus")
+    public Result updateStatus(long[] ids,String status){
+
+        try {
+            itemCatService.updateStatus(ids,status);
+            return new Result(true,"审核通过");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"驳回");
+        }
+
+    }
 }
